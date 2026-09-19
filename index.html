@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>try{document.documentElement.dataset.lang=localStorage.getItem('happ-lang')||'en'}catch{}</script>
+  <title>Happ Link Workbench</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23121722'/%3E%3Cpath d='M8 8h16v4H12v4h10v4H12v4H8z' fill='%2378e6d1'/%3E%3C/svg%3E">
+  <script type="module" src="/src/main.js"></script>
+</head>
+<body>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="logo" href="#/workspace" aria-label="Happ Link Workbench">
+      <span class="logo-mark">H</span>
+      <span><b>Happ</b><small>Link Workbench</small></span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#/workspace" class="nav-link active"><span class="lang-ru">Рабочая область</span><span class="lang-en">Workspace</span></a>
+      <a href="#/request" class="nav-link"><span class="lang-ru">Запрос</span><span class="lang-en">Request</span></a>
+      <a href="#/guide" class="nav-link"><span class="lang-ru">Инструкция</span><span class="lang-en">Guide</span></a>
+    </nav>
+    <button id="language" class="language" type="button" aria-label="Switch language">EN</button>
+  </header>
+
+  <main class="shell">
+    <section id="view-workspace" class="view active">
+      <div class="page-intro">
+        <div>
+          <p class="eyebrow"><span class="lang-ru">Локальная утилита</span><span class="lang-en">Local utility</span></p>
+          <h1><span class="lang-ru">Расшифровка и редактирование happ://-ссылок.</span><span class="lang-en">Decrypt and edit happ:// links.</span></h1>
+          <p class="lede"><span class="lang-ru">Расшифровка crypt–crypt5 выполняется локально в браузере. Редактируйте параметры ссылки, получайте готовые форматы импорта для клиентов и шифруйте URL через официальный API Happ.</span><span class="lang-en">crypt–crypt5 decryption runs entirely in your browser. Edit link parameters, generate client import formats, and encrypt URLs through the official Happ API.</span></p>
+        </div>
+        <div class="privacy-pill"><span class="dot"></span><span class="lang-ru">Работает локально в браузере</span><span class="lang-en">Runs locally in the browser</span></div>
+      </div>
+
+      <div class="workspace-grid">
+        <section class="card source-card">
+          <div class="card-head"><div><span class="step">01</span><h2><span class="lang-ru">Источник</span><span class="lang-en">Source</span></h2></div><span class="card-tag">CRYPT · URL</span></div>
+          <label for="source"><span class="lang-ru">Happ-ссылка или HTTPS URL</span><span class="lang-en">Happ link or HTTPS URL</span></label>
+          <textarea id="source" class="code-area" placeholder="happ://crypt5/...&#10;https://provider.example/sub/..." spellcheck="false"></textarea>
+          <div class="action-row"><button id="prepare" class="primary" type="button" disabled><span class="lang-ru">Подготовить</span><span class="lang-en">Prepare</span></button><button id="source-clear" class="secondary" type="button"><span class="lang-ru">Очистить</span><span class="lang-en">Clear</span></button></div>
+          <div id="source-status" class="status" role="status"></div>
+        </section>
+
+        <section class="card edit-card">
+          <div class="card-head"><div><span class="step">02</span><h2><span class="lang-ru">Проверенный URL</span><span class="lang-en">Verified URL</span></h2></div><span id="source-kind" class="card-tag muted">WAITING</span></div>
+          <label for="destination"><span class="lang-ru">Адрес назначения</span><span class="lang-en">Destination</span></label>
+          <input id="destination" class="text-input" type="url" spellcheck="false" placeholder="https://..." autocomplete="off">
+          <div class="param-add">
+            <input id="param-key" class="text-input" type="text" placeholder="parameter" autocomplete="off">
+            <input id="param-value" class="text-input" type="text" placeholder="value" autocomplete="off">
+            <button id="param-add" class="secondary compact" type="button">+</button>
+          </div>
+          <div id="params" class="params"></div>
+
+          <div class="identity-block">
+            <div class="identity-head">
+              <label class="identity-label"><span class="lang-ru">Идентичность устройства</span><span class="lang-en">Device identity</span></label>
+              <button id="id-hwid-roll" class="secondary compact" type="button" title="HWID">⟳ HWID</button>
+            </div>
+            <div class="two-col">
+              <div><label for="id-hwid">x-hwid</label><input id="id-hwid" class="text-input" type="text" spellcheck="false" autocomplete="off"></div>
+              <div><label for="id-ua">User-Agent</label><input id="id-ua" class="text-input" type="text" spellcheck="false" autocomplete="off" placeholder="Happ/1.16.0 (iOS 18.3; iPhone 14 Pro)"></div>
+              <div><label for="id-os">x-device-os</label><input id="id-os" class="text-input" type="text" spellcheck="false" autocomplete="off" placeholder="iOS"></div>
+              <div><label for="id-ver">x-ver-os</label><input id="id-ver" class="text-input" type="text" spellcheck="false" autocomplete="off" placeholder="18.3"></div>
+              <div><label for="id-model">x-device-model</label><input id="id-model" class="text-input" type="text" spellcheck="false" autocomplete="off" placeholder="iPhone 14 Pro"></div>
+            </div>
+            <div class="action-row">
+              <button id="id-to-url" class="secondary compact" type="button"><span class="lang-ru">hwid → в ссылку</span><span class="lang-en">hwid → into link</span></button>
+              <a class="mini-link" href="#/request"><span class="lang-ru">Отправить с этими заголовками →</span><span class="lang-en">Send with these headers →</span></a>
+            </div>
+            <p class="micro"><span class="lang-ru">Эти поля — заголовки, их отправляет клиент при загрузке подписки (вкладка «Запрос»). Параметр hwid в ссылке — официальная привязка ссылки к устройству: приложение добавит её только на совпадающем HWID.</span><span class="lang-en">These fields are headers, sent by the client when loading the subscription (Request tab). A hwid link parameter is the official device binding: the app adds the link only on a matching HWID.</span></p>
+          </div>
+          <p class="micro"><span class="lang-ru">Заголовки устройства передаются при загрузке подписки, а не внутри ссылки.</span><span class="lang-en">Device headers are transmitted when the subscription is loaded, not embedded in the link.</span></p>
+        </section>
+
+        <section class="card result-card">
+          <div class="card-head"><div><span class="step">03</span><h2><span class="lang-ru">Точный результат</span><span class="lang-en">Exact output</span></h2></div><span id="format-note" class="card-tag">PLAIN URL</span></div>
+          <label for="format"><span class="lang-ru">Формат</span><span class="lang-en">Format</span></label>
+          <select id="format" class="text-input">
+            <option value="raw">HTTPS URL</option>
+            <option value="v2raytun">v2RayTun import</option>
+            <option value="base64">Base64 text</option>
+            <option value="json">JSON</option>
+            <option value="happ-official">Happ crypt (official API)</option>
+          </select>
+          <textarea id="output" class="code-area result-area" readonly spellcheck="false"></textarea>
+          <div class="action-row"><button id="copy-output" class="primary" type="button" disabled><span class="lang-ru">Копировать</span><span class="lang-en">Copy</span></button><button id="qr-open" class="secondary" type="button"><span class="lang-ru">QR-код</span><span class="lang-en">QR code</span></button></div>
+          <p id="format-help" class="micro"></p>
+          <div id="qr" class="qr-wrap" hidden><canvas id="qr-canvas" width="240" height="240"></canvas><span><span class="lang-ru">Сканируйте только после проверки URL.</span><span class="lang-en">Scan only after checking the URL.</span></span></div>
+        </section>
+
+        <section class="card encrypt-card">
+          <div class="card-head"><div><span class="step">04</span><h2><span class="lang-ru">Официальное шифрование</span><span class="lang-en">Official encryption</span></h2></div><span class="card-tag safe">API</span></div>
+          <p class="card-copy"><span class="lang-ru">Crypt5-ссылка создаётся официальным API Happ (crypto.happ.su). URL отправляется в сервис только после вашего подтверждения.</span><span class="lang-en">The crypt5 link is issued by the official Happ API (crypto.happ.su). The URL is submitted only after your confirmation.</span></p>
+          <label class="check"><input id="encrypt-consent" type="checkbox"><span><span class="lang-ru">Подтверждаю отправку URL на crypto.happ.su</span><span class="lang-en">I confirm submitting the URL to crypto.happ.su</span></span></label>
+          <button id="encrypt" class="primary" type="button" disabled><span class="lang-ru">Получить Happ-ссылку</span><span class="lang-en">Get Happ link</span></button>
+        </section>
+      </div>
+    </section>
+
+    <section id="view-request" class="view">
+      <div class="page-intro compact-intro"><div><p class="eyebrow"><span class="lang-ru">Устройства</span><span class="lang-en">Devices</span></p><h1><span class="lang-ru">Запрос подписки</span><span class="lang-en">Subscription request</span></h1><p class="lede"><span class="lang-ru">Отправляет запрос с точными заголовками устройства и показывает ответ панели: статус, лимит и формат содержимого.</span><span class="lang-en">Sends the request with exact device headers and shows the panel response: status, limit and content format.</span></p></div><span id="bridge-state" class="privacy-pill"><span class="dot"></span>CHECKING</span></div>
+      <div class="request-grid">
+        <section class="card">
+          <div class="card-head"><div><span class="step">01</span><h2><span class="lang-ru">Идентичность</span><span class="lang-en">Identity</span></h2></div><span class="card-tag">HEADERS</span></div>
+          <label for="request-url"><span class="lang-ru">URL подписки</span><span class="lang-en">Subscription URL</span></label><input id="request-url" class="text-input" type="url" spellcheck="false">
+          <label for="request-route"><span class="lang-ru">Маршрут</span><span class="lang-en">Route</span></label>
+          <select id="request-route" class="text-input">
+            <option value="bridge">Мост (локальный сервер)</option>
+            <option value="corsfix">corsfix.com — публичный (~60/мин)</option>
+            <option value="custom">Свой прокси</option>
+          </select>
+          <div id="custom-proxy-row" hidden>
+            <label for="request-custom-proxy"><span class="lang-ru">Адрес прокси (шаблон с {url} или префикс)</span><span class="lang-en">Proxy address ({url} template or prefix)</span></label>
+            <input id="request-custom-proxy" class="text-input" type="text" spellcheck="false" placeholder="https://my-worker.workers.dev/?url={url}">
+          </div>
+          <label for="request-hwid">x-hwid</label><input id="request-hwid" class="text-input" type="text" spellcheck="false" placeholder="ue42ljxu4dbicabv">
+          <label for="request-ua">User-Agent</label><input id="request-ua" class="text-input" type="text" spellcheck="false" placeholder="Happ/1.16.0 (iOS 18.3; iPhone 14 Pro)">
+          <div class="two-col"><div><label for="request-os">x-device-os</label><input id="request-os" class="text-input" type="text" placeholder="iOS"></div><div><label for="request-version">x-ver-os</label><input id="request-version" class="text-input" type="text" placeholder="18.3"></div></div>
+          <label for="request-model">x-device-model</label><input id="request-model" class="text-input" type="text" placeholder="iPhone 14 Pro">
+          <button id="request-send" class="primary" type="button"><span class="lang-ru">Отправить запрос</span><span class="lang-en">Send request</span></button>
+          <p class="micro"><span class="lang-ru">Поля идентичности сохраняются в этом браузере и подставляются автоматически. Возьмите HWID из поддерживаемого клиента — все устройства с этим значением панель считает одним. Публичный маршрут видит URL подписки; при прямом запросе браузер подставляет свой User-Agent.</span><span class="lang-en">Identity fields are saved in this browser and filled in automatically. Take the HWID from a supported client — the panel counts every device with this value as one. A public route sees the subscription URL; on direct routes the browser substitutes its own User-Agent.</span></p>
+        </section>
+        <section class="card response-card">
+          <div class="card-head"><div><span class="step">02</span><h2><span class="lang-ru">Ответ</span><span class="lang-en">Response</span></h2></div><span id="request-status" class="card-tag muted">WAITING</span></div>
+          <textarea id="response" class="code-area response-area" readonly spellcheck="false"></textarea>
+          <div class="action-row"><button id="copy-response" class="secondary" type="button" disabled><span class="lang-ru">Копировать</span><span class="lang-en">Copy</span></button><button id="download-response" class="secondary" type="button" disabled><span class="lang-ru">Скачать TXT</span><span class="lang-en">Download TXT</span></button></div>
+          <div id="response-meta" class="response-meta"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="view-guide" class="view guide">
+      <div class="page-intro compact-intro"><div><p class="eyebrow"><span class="lang-ru">Инструкция</span><span class="lang-en">Guide</span></p><h1><span class="lang-ru">Устройства, ссылки и лимиты</span><span class="lang-en">Devices, links and limits</span></h1><p class="lede"><span class="lang-ru">Как панель считает устройства и как пользоваться инструментом.</span><span class="lang-en">How the panel counts devices and how to use the tool.</span></p></div></div>
+      <div class="guide-grid">
+        <article class="card guide-card"><span class="guide-index">01</span><h2><span class="lang-ru">Как панель считает устройства</span><span class="lang-en">How the panel counts devices</span></h2><p><span class="lang-ru">Панель (например, Remnawave) считает уникальные значения заголовка <code>x-hwid</code>. Это значение формирует клиентское приложение — Happ, v2RayTun и другие — при каждой загрузке подписки. Два телефона с одинаковым <code>x-hwid</code> для панели неотличимы: они <b>считаются одним устройством</b>. Заголовок отправляют: Happ, v2RayTun, Koala Clash, FlClashX, Prizrak-Box, Throne, Shadowrocket, Karing, Clash Mi, Incy, RenoarX, DeskBox, Passwall-OpenWRT (у части приложений HWID по умолчанию выключен — включите в настройках).</span><span class="lang-en">The panel (for example, Remnawave) counts unique <code>x-hwid</code> header values. The client app — Happ, v2RayTun and others — produces this value on every subscription load. Two phones presenting the same <code>x-hwid</code> are indistinguishable to the panel: they <b>count as one device</b>. Apps sending the header: Happ, v2RayTun, Koala Clash, FlClashX, Prizrak-Box, Throne, Shadowrocket, Karing, Clash Mi, Incy, RenoarX, DeskBox, Passwall-OpenWRT (some ship HWID disabled by default — enable it in settings).</span></p></article>
+        <article class="card guide-card"><span class="guide-index">02</span><h2><span class="lang-ru">Добавляем устройства: одна идентичность для всех</span><span class="lang-en">Adding devices: one identity for all</span></h2><ol><li><span class="lang-ru">На вкладке «Запрос» задайте идентичность: HWID (10–64 символа, буквы/цифры), User-Agent и модель. Поля сохраняются автоматически.</span><span class="lang-en">On the Request tab set the identity: HWID (10–64 characters, letters/digits), User-Agent and model. The fields are saved automatically.</span></li><li><span class="lang-ru">Нажмите «Отправить запрос» — панель зарегистрирует эту идентичность и вернёт содержимое подписки.</span><span class="lang-en">Press «Send request» — the panel registers this identity and returns the subscription content.</span></li><li><span class="lang-ru">На остальных устройствах укажите тот же HWID в настройках клиента, если приложение поддерживает ручной ввод, — все они будут считаться одним устройством. В редакторе кнопка «hwid → в ссылку» дополнительно вшивает HWID в саму ссылку: приложение добавит её только на устройстве с этим HWID.</span><span class="lang-en">On your other devices enter the same HWID in the client settings where manual input is supported — all of them count as one device. In the editor, «hwid → into link» additionally embeds the HWID into the link itself: the app adds it only on a device with that HWID.</span></li></ol><p><span class="lang-ru">Если клиент не позволяет ввести HWID вручную, он продолжит отправлять свой собственный — и займёт отдельный слот.</span><span class="lang-en">If a client does not allow manual HWID input, it keeps sending its own value and occupies a separate slot.</span></p></article>
+        <article class="card guide-card warning"><span class="guide-index">03</span><h2><span class="lang-ru">Если достигнут лимит</span><span class="lang-en">When the limit is reached</span></h2><p><span class="lang-ru">Каждый <b>новый</b> уникальный HWID занимает слот. Когда слоты закончились, панель отклоняет новые идентификаторы: ответ приходит с заголовком <code>x-hwid-max-devices-reached: true</code> (часто с пустым телом). Это решение сервера — обойти его со стороны клиента нельзя. Варианты: удалить неиспользуемое устройство в панели, попросить владельца поднять лимит или отключить ограничение для пользователя. Использование подписки сверх условий тарифа может нарушать правила провайдера.</span><span class="lang-en">Every <b>new</b> unique HWID takes a slot. Once the slots are gone the panel denies new identities: the response carries <code>x-hwid-max-devices-reached: true</code> (often with an empty body). This is a server-side decision and cannot be bypassed from a client. Options: remove an unused device in the panel, ask the owner to raise the limit, or disable the restriction for the user. Sharing beyond your plan may violate the provider's terms.</span></p></article>
+        <article class="card guide-card"><span class="guide-index">04</span><h2><span class="lang-ru">Заголовки ответа панели</span><span class="lang-en">Panel response headers</span></h2><p><span class="lang-ru">Вкладка «Запрос» показывает их рядом с содержимым:</span><span class="lang-en">The Request tab shows them next to the content:</span></p><ul><li><code>x-hwid-active: true</code> — <span class="lang-ru">лимит активен для этого запроса</span><span class="lang-en">the limit is enforced for this request</span></li><li><code>x-hwid-not-supported: true</code> — <span class="lang-ru">запрос пришёл без принятого HWID</span><span class="lang-en">the request had no accepted HWID</span></li><li><code>x-hwid-max-devices-reached: true</code> — <span class="lang-ru">лимит исчерпан, новый HWID отклонён</span><span class="lang-en">the limit is reached, a new HWID was denied</span></li><li><code>x-hwid-limit: true</code> — <span class="lang-ru">совместимость с v2RayTun</span><span class="lang-en">v2RayTun compatibility flag</span></li></ul></article>
+        <article class="card guide-card"><span class="guide-index">05</span><h2><span class="lang-ru">Ссылки и шифрование</span><span class="lang-en">Links and encryption</span></h2><p><span class="lang-ru">Расшифровка <code>happ://crypt…crypt5</code> выполняется локально. HTTPS URL можно свободно редактировать. Для v2RayTun есть документированный импорт <code>v2raytun://import/{subscription_link}</code>. Crypt5-ссылку создаёт официальный API <code>crypto.happ.su</code> — URL отправляется туда только после вашего согласия. Base64 и JSON в списке форматов — это кодирование данных, а не конвертер конфигураций.</span><span class="lang-en">Decryption of <code>happ://crypt…crypt5</code> runs locally. HTTPS URLs can be edited freely. v2RayTun has a documented import <code>v2raytun://import/{subscription_link}</code>. A crypt5 link is issued by the official <code>crypto.happ.su</code> API — the URL is sent there only with your consent. Base64 and JSON in the format list are data encodings, not configuration converters.</span></p></article>
+        <article class="card guide-card"><span class="guide-index">06</span><h2><span class="lang-ru">Приватность</span><span class="lang-en">Privacy</span></h2><p><span class="lang-ru">Расшифровка, редактирование и генерация ссылок не покидают браузер. Заголовки идентичности хранятся только в вашем браузере и уходят напрямую на сервер вашей подписки при запросе. Ответ ограничен 2 МиБ и 15 секундами; приватные адреса и редиректы отклоняются.</span><span class="lang-en">Decryption, editing and link generation never leave the browser. Identity headers are stored only in your browser and go directly to your subscription server on request. Responses are capped at 2 MiB and 15 seconds; private addresses and redirects are rejected.</span></p></article>
+        <article class="card guide-card"><h2><span class="lang-ru">Первоисточники</span><span class="lang-en">Primary sources</span></h2><ul><li><a href="https://docs.rw/features/hwid-device-limit" target="_blank" rel="noopener noreferrer">Remnawave: HWID device limit</a></li><li><a href="https://www.happ.su/main/dev-docs/hwid-links" target="_blank" rel="noopener noreferrer">Happ: HWID links</a></li><li><a href="https://www.happ.su/main/dev-docs/crypto-link" target="_blank" rel="noopener noreferrer">Happ: crypto link API</a></li><li><a href="https://docs.v2raytun.com/deep-link" target="_blank" rel="noopener noreferrer">v2RayTun: deep link</a></li></ul></article>
+      </div>
+    </section>
+  </main>
+
+  <div id="notice" class="notice" role="status"></div>
+  <dialog id="qr-dialog" class="qr-dialog"><button id="qr-close" class="dialog-close" type="button">×</button><canvas id="dialog-canvas" width="360" height="360"></canvas><p><span class="lang-ru">Проверьте содержимое перед сканированием.</span><span class="lang-en">Check the content before scanning.</span></p></dialog>
+</body>
+</html>
