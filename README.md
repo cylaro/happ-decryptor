@@ -33,6 +33,10 @@ The request bridge is a Vite middleware (`server/bridge.js`) mounted in both `co
 - 59 unit tests covering the crypt5/legacy encryption round trips, link parsing and editing, converters, and the HWID header contract.
 - 10 Playwright browser tests covering the editor workflow, error handling, language switching, identity persistence, and mobile layout.
 
+## Disclaimer
+
+Educational project: it demonstrates how `happ://` link encryption and HWID device counting work. You are responsible for complying with your provider's terms and applicable law. Not affiliated with Happ or Remnawave; no warranty (see [LICENSE](LICENSE)).
+
 ## Credits
 
 Based on [LeeeeT/happ-decryptor](https://github.com/LeeeeT/happ-decryptor). The original repository is published without a license; this project keeps a visible attribution accordingly.
