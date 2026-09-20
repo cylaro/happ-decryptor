@@ -11,6 +11,7 @@ Supported link formats: `crypt`, `crypt2`, `crypt3`, `crypt4`, `crypt5` (legacy 
 - **Decryption** — generations 1–4 are RSA-PKCS1v15 wrappers decrypted with [node-forge](https://github.com/digitalbazaar/forge); `crypt5` uses RSA-4096 key recovery plus ChaCha20-Poly1305 via [noble-ciphers](https://github.com/paulmillr/noble-ciphers). A native-library CPU emulator ([unicorn.js](https://github.com/AlexAltea/unicorn.js)) remains as an automatic fallback. 36 bundled `crypt5` keys.
 - **Link editor** — edit the destination URL and its query parameters (repeated parameters preserved), bind a HWID into the link, and generate every supported output format: plain URL, Base64 text, JSON, `v2raytun://import`, `clash://install-config`, `sing-box://import`, plus QR codes.
 - **Device identity** — send subscription requests with the Happ HWID header set (`x-hwid`, `x-device-os`, `x-ver-os`, `x-device-model`, `User-Agent`) and inspect the panel response, including `x-hwid-max-devices-reached` and related headers. Requests go through a local bridge (Vite middleware) or a public proxy route.
+- **[hwid-relay](https://github.com/cylaro/hwid-relay)** — companion project: a self-hosted Cloudflare Worker that lets unlimited devices share one HWID identity on panels with device limits.
 - **Official encryption** — wrap any URL into a `happ://crypt5` link via the official [crypto.happ.su](https://crypto.happ.su) API, gated behind explicit consent.
 - **English / Russian interface**, persisted across visits.
 
