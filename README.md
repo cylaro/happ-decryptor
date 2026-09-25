@@ -12,6 +12,7 @@ Supported link formats: `crypt`, `crypt2`, `crypt3`, `crypt4`, `crypt5` (legacy 
 - **Link editor** — edit the destination URL and its query parameters (repeated parameters preserved), bind a HWID into the link, and generate every supported output format: plain URL, Base64 text, JSON, `v2raytun://import`, `clash://install-config`, `sing-box://import`, plus QR codes.
 - **Device identity** — send subscription requests with the Happ HWID header set (`x-hwid`, `x-device-os`, `x-ver-os`, `x-device-model`, `User-Agent`) and inspect the panel response, including `x-hwid-max-devices-reached` and related headers. Requests go through a local bridge (Vite middleware) or a public proxy route.
 - **[hwid-relay](https://github.com/cylaro/hwid-relay)** — companion project: a self-hosted Cloudflare Worker that lets unlimited devices share one HWID identity on panels with device limits.
+- **[happ-relay-vercel](https://github.com/cylaro/happ-relay-vercel)** — the same one-HWID relay on Vercel, for networks where Cloudflare is not the best fit.
 - **Official encryption** — wrap any URL into a `happ://crypt5` link via the official [crypto.happ.su](https://crypto.happ.su) API, gated behind explicit consent.
 - **English / Russian interface**, persisted across visits.
 
